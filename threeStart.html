@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+
+		<script src="js/three.js"></script><!-- 此为es5引入方式 -->
+		<script src="js/OrbitControls.js"></script>
+
+		<script>
+			// let THREE=require('three')  //CommonJS/AMD引入方式
+			// import * as THREE from 'three'//es6引入方式
+
+			let scene = new THREE.Scene()
+
+			let fov = 75
+			let aspect = window.innerWidth / window.innerHeight
+			let near = 0.1
+			let far = 10000
+			let camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+			//PerspectiveCamera的第一个参数是视野，指在给定的情景下屏幕上显示的范围，值是度
+			//第二个参数是纵横比，一般都是用元素的宽除以高，不然会出现挤压变形
+			//最后两个参数是近裁剪面和远裁剪面，即比设置的数更近的或更远的就剪切掉
+
+			let renderer = new THREE.WebGLRenderer()
+			renderer.setSize(window.innerWidth,window.innerHeight, false)//画布渲染长宽,false为以半分辨率渲染，默认为true
+			document.body.appendChild(renderer.domElement)//把render加入文档中，就是一个canves标签
+			//到这里一直是在布景
+			
+
+			let boxWidth = 1
+			let boxHeight = 1
+			let boxDepth = 1
+			let geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth)//盒子模型，包含立方体所有顶点和填充面的对象
+			// console.log(geometry)
+			// let material = new THREE.MeshBasicMaterial({color:0x00ff00})//网孔基础材料，threejs支持多种材料，这里用这个即可
+
+
+			var image = document.createElement('img')
+			image.src = 'data:image/png;base64,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'
+
+			let texture = THREE.ImageUtils.loadTexture(image.src)
+			let material = new THREE.MeshLambertMaterial({map: texture})//网孔基础材料，threejs支持多种材料，这里用这个即可
+
+
+
+			let cube = new THREE.Mesh(geometry,material)//网孔，用来承载几何模型的对象，可以把材料应用到它上面，然后添加到场景中完成旋转动画
+			// cube.position.z = -2
+			cube.position.x = 2
+
+			let faceNrHelper = new THREE.FaceNormalsHelper( cube, 2, 0x0000ff, 8 )
+			scene.add(faceNrHelper)
+			let vertexNrHelper = new THREE.VertexNormalsHelper( cube, 2, 0xff0000, 1 )
+			scene.add(vertexNrHelper)
+			setLight(scene)
+			
+			var grp = new THREE.Group()
+			grp.add(cube)
+			// grp.position.x = 8
+			grp.position.y = 2  //group中设了位置会和mesh中设的位置叠加
+			scene.add(grp)
+			console.log(scene)
+			// console.log(cube)
+			// console.log(camera)
+			camera.position.z = 10
+			//这4行是添加立方体，类似演员
+
+			//测试开始
+			// var geometry1 = new THREE.Geometry(); //声明一个空几何体对象
+			// var p1 = new THREE.Vector3(0,0,0); //顶点1坐标
+			// var p2 = new THREE.Vector3(20,0,0); //顶点2坐标
+			// var p3 = new THREE.Vector3(0,20,0); //顶点3坐标
+			// geometry1.vertices.push(p1,p2,p3); //顶点坐标添加到geometry对象
+			// var normal1 = new THREE.Vector3( 0, 0, 1 ); //三角面法向量
+			// var face1 = new THREE.Face3( 0, 1, 2, normal1); //创建三角面
+			// geometry1.faces.push( face1 ); //三角面添加到几何体
+			// var material1=new THREE.MeshBasicMaterial({
+			// 		color:0x0000ff,//三角面颜色
+			// 		side:THREE.FrontSide//两面可见
+			// });//材质对象
+			// var mesh1=new THREE.Mesh(geometry1,material1);//网格模型对象
+			// scene.add(mesh1);
+			//测试结束
+
+			// let geo = new THREE.Geometry()    
+			// geo.vertices.push(
+      //   new THREE.Vector3( -5,  5, 0 ),
+      //   new THREE.Vector3( -5, -5, 0 ),
+      //   new THREE.Vector3(  5, -5, 0 )
+      // )
+			// geo.faces.push(new THREE.Face3( 0, 1, 2 ))
+			// let gmesh = new THREE.Mesh(geo, material)
+			// scene.add(gmesh)
+			// console.log(scene)
+
+			var axesHelper = new THREE.AxesHelper(10)
+			scene.add(axesHelper)
+
+			let controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+			function animate(){//渲染循环，每秒60次的频率来绘制
+				requestAnimationFrame(animate)//此函数用来替代setInterval，它有多个优点，比如浏览器tab切换后停止渲染来节约资源，屏幕刷新同步避免无效刷新，在不支持该接口的浏览器中能安全回退为setInterval
+				// cube.rotation.x += 0.01
+				// cube.rotation.y += 0.01
+				renderer.render(scene,camera)
+			}
+			animate()
+			//灯光
+			function setLight(scene)
+    {
+      let light = new THREE.Group()
+      //半球光
+      let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.47)
+      hemiLight.position.set(1, 1, 1)
+      light.add(hemiLight)
+
+      //直射光-仿太阳光
+      let dirLight = new THREE.DirectionalLight(0xffffff, 0.18)
+      dirLight.position.set(1, 1, 1)
+      light.add(dirLight)
+
+
+      let dirLight1 = new THREE.DirectionalLight(0xffffff, 0.18)
+      dirLight1.position.set(-1, 1, -1)
+      light.add(dirLight1)
+
+      let dirLight2 = new THREE.DirectionalLight(0xffffff, 0.18)
+      dirLight2.position.set(-1, 1, 1)
+      light.add(dirLight2)
+
+      let dirLight3 = new THREE.DirectionalLight(0xffffff, 0.18)
+      dirLight3.position.set(1, 1, -1)
+      light.add(dirLight3)
+
+      //环境光-调整饱和度
+      let ambLight = new THREE.AmbientLight(0x525252, 0.5)
+      light.add(ambLight)
+
+      scene.add(light)
+    }
+
+			
+		</script>
+	</body>
+</html>
