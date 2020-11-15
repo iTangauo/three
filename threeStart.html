@@ -66,8 +66,6 @@
 			grp.position.y = 2  //group中设了位置会和mesh中设的位置叠加
 			scene.add(grp)
 			console.log(scene)
-			// console.log(cube)
-			// console.log(camera)
 			camera.position.z = 10
 			//这4行是添加立方体，类似演员
 
@@ -90,10 +88,10 @@
 
 			// let geo = new THREE.Geometry()    
 			// geo.vertices.push(
-      //   new THREE.Vector3( -5,  5, 0 ),
-      //   new THREE.Vector3( -5, -5, 0 ),
-      //   new THREE.Vector3(  5, -5, 0 )
-      // )
+      			//   new THREE.Vector3( -5,  5, 0 ),
+      			//   new THREE.Vector3( -5, -5, 0 ),
+      			//   new THREE.Vector3(  5, -5, 0 )
+     			// )
 			// geo.faces.push(new THREE.Face3( 0, 1, 2 ))
 			// let gmesh = new THREE.Mesh(geo, material)
 			// scene.add(gmesh)
@@ -104,7 +102,8 @@
 
 			let controls = new THREE.OrbitControls(camera, renderer.domElement)
 
-			function animate(){//渲染循环，每秒60次的频率来绘制
+			function animate()
+			{//渲染循环，每秒60次的频率来绘制
 				requestAnimationFrame(animate)//此函数用来替代setInterval，它有多个优点，比如浏览器tab切换后停止渲染来节约资源，屏幕刷新同步避免无效刷新，在不支持该接口的浏览器中能安全回退为setInterval
 				// cube.rotation.x += 0.01
 				// cube.rotation.y += 0.01
@@ -113,39 +112,37 @@
 			animate()
 			//灯光
 			function setLight(scene)
-    {
-      let light = new THREE.Group()
-      //半球光
-      let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.47)
-      hemiLight.position.set(1, 1, 1)
-      light.add(hemiLight)
+		    	{
+		      	      let light = new THREE.Group()
+			      //半球光
+			      let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.47)
+			      hemiLight.position.set(1, 1, 1)
+			      light.add(hemiLight)
 
-      //直射光-仿太阳光
-      let dirLight = new THREE.DirectionalLight(0xffffff, 0.18)
-      dirLight.position.set(1, 1, 1)
-      light.add(dirLight)
+			      //直射光-仿太阳光
+			      let dirLight = new THREE.DirectionalLight(0xffffff, 0.18)
+			      dirLight.position.set(1, 1, 1)
+			      light.add(dirLight)
 
 
-      let dirLight1 = new THREE.DirectionalLight(0xffffff, 0.18)
-      dirLight1.position.set(-1, 1, -1)
-      light.add(dirLight1)
+			      let dirLight1 = new THREE.DirectionalLight(0xffffff, 0.18)
+			      dirLight1.position.set(-1, 1, -1)
+			      light.add(dirLight1)
 
-      let dirLight2 = new THREE.DirectionalLight(0xffffff, 0.18)
-      dirLight2.position.set(-1, 1, 1)
-      light.add(dirLight2)
+			      let dirLight2 = new THREE.DirectionalLight(0xffffff, 0.18)
+			      dirLight2.position.set(-1, 1, 1)
+			      light.add(dirLight2)
 
-      let dirLight3 = new THREE.DirectionalLight(0xffffff, 0.18)
-      dirLight3.position.set(1, 1, -1)
-      light.add(dirLight3)
+			      let dirLight3 = new THREE.DirectionalLight(0xffffff, 0.18)
+			      dirLight3.position.set(1, 1, -1)
+			      light.add(dirLight3)
 
-      //环境光-调整饱和度
-      let ambLight = new THREE.AmbientLight(0x525252, 0.5)
-      light.add(ambLight)
+			      //环境光-调整饱和度
+			      let ambLight = new THREE.AmbientLight(0x525252, 0.5)
+			      light.add(ambLight)
 
-      scene.add(light)
-    }
-
-			
+			      scene.add(light)
+		    	}
 		</script>
 	</body>
 </html>
